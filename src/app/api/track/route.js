@@ -1,7 +1,34 @@
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const trackingNumber = searchParams.get("trackingNumber");
+  // ✅ Allowed origin(s)
+  const allowedOrigins = [
+    "https://baghhoney.com", // replace with your store domain
+  ];
 
+  const origin = req.headers.get("origin") || "";
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": allowedOrigins.includes(origin)
+      ? origin
+      : "*", // set "*" if you want open access
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
+
+  // ✅ Handle preflight request (OPTIONS)
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+
+  if (!trackingNumber) {
+    return new Response(
+      JSON.stringify({ error: "Tracking number is required" }),
+      {
+        status: 400,
+        headers: corsHeaders,
+      }
+    );
+  }
   if (!trackingNumber) {
     return new Response(
       JSON.stringify({ error: "Tracking number is required" }),
