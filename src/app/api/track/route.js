@@ -12,7 +12,8 @@ export async function GET(req) {
   try {
     const apiKey = process.env.LEOPARDS_API_KEY;
     const apiPassword = process.env.LEOPARDS_API_PASSWORD;
-
+    console.log("key -> ", apiKey);
+    console.log("password -> ", apiPassword);
     const apiUrl = `https://merchantapi.leopardscourier.com/api/trackBookedPacket/format/json/?api_key=${apiKey}&api_password=${apiPassword}&track_numbers=${trackingNumber}`;
 
     const apiRes = await fetch(apiUrl);
